@@ -1,4 +1,4 @@
 class Constants {
   static const String openAiApiKey =
-      "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";
+      "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";
 }
