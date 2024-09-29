@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:open_ai_using_chatgpt_and_dale_e/screens/home_screen.dart';
+import 'package:open_ai_gpt/screens/home_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
