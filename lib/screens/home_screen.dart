@@ -1,14 +1,18 @@
 // ignore_for_file: avoid_print
 
 import 'dart:convert';
+import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:image_downloader/image_downloader.dart';
+import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:open_ai_gpt/api/api_service.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:text_to_speech/text_to_speech.dart';
+import 'package:http/http.dart' as http;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -126,6 +130,61 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
 
     initializeSpeechToText();
+  }
+
+  Future<void> _saveImage(BuildContext context, String url) async {
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+    late String message;
+
+    try {
+      // Download image
+      final http.Response response = await http.get(Uri.parse(url));
+
+      // Get temporary directory
+      final dir = await getTemporaryDirectory();
+
+      // Create an image name
+      var filename = '${dir.path}/SaveImage${Random().nextInt(100)}.png';
+
+      // Save to filesystem
+      final file = File(filename);
+      await file.writeAsBytes(response.bodyBytes);
+
+      // Ask the user to save it
+      final params = SaveFileDialogParams(sourceFilePath: file.path);
+      final finalPath = await FlutterFileDialog.saveFile(params: params);
+
+      if (finalPath != null) {
+        message = 'Image saved to disk';
+      }
+    } catch (e) {
+      message = e.toString();
+      scaffoldMessenger.showSnackBar(SnackBar(
+        content: Text(
+          message,
+          style: const TextStyle(
+            fontSize: 12,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: const Color(0xFFe91e63),
+      ));
+    }
+
+    if (message != null) {
+      scaffoldMessenger.showSnackBar(SnackBar(
+        content: Text(
+          message,
+          style: const TextStyle(
+            fontSize: 12,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: const Color(0xFFe91e63),
+      ));
+    }
   }
 
   @override
@@ -307,18 +366,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               ElevatedButton(
                                 onPressed: () async {
-                                  String? imageStatus =
-                                      await ImageDownloader.downloadImage(
-                                          imageUrlFromOpenAI);
-
-                                  if (imageStatus != null) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text(
-                                            "Image downloaded Successfully."),
-                                      ),
-                                    );
-                                  }
+                                  _saveImage(context, imageUrlFromOpenAI);
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.deepPurple,

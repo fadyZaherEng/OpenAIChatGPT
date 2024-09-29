@@ -38,8 +38,9 @@ dependencies:
   speech_to_text:
   loading_animation_widget:
   http:
-  image_downloader:
   text_to_speech:
+  path_provider:
+  flutter_file_dialog:
 
 dev_dependencies:
     flutter_test:
