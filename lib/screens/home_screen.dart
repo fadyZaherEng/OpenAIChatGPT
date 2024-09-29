@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:image_downloader/image_downloader.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:open_ai_gpt/api/api_service.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
@@ -272,7 +273,59 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                )
+                ),
+
+                const SizedBox(
+                  height: 24,
+                ),
+
+                //display result
+                modeOpenAI == "chat"
+                    ? SelectableText(
+                        answerTextFromOpenAI,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
+                    : modeOpenAI == "image" && imageUrlFromOpenAI.isNotEmpty
+                        ? Column(
+                            //image
+                            children: [
+                              Image.network(
+                                imageUrlFromOpenAI,
+                              ),
+                              const SizedBox(
+                                height: 14,
+                              ),
+                              ElevatedButton(
+                                onPressed: () async {
+                                  String? imageStatus =
+                                      await ImageDownloader.downloadImage(imageUrlFromOpenAI);
+
+                                  if (imageStatus != null) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                            "Image downloaded Successfully."),
+                                      ),
+                                    );
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.deepPurple,
+                                ),
+                                child: const Text(
+                                  "Download this Image",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        : const SizedBox.shrink()
               ],
             ),
           ),

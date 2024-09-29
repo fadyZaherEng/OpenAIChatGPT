@@ -6,6 +6,12 @@
 	<string>Open Ai Using Chatgpt And Dale E  describe why your app uses speech recognition</string>
 	<key>NSMicrophoneUsageDescription</key>
     <string>Open Ai Using Chatgpt And Dale E needs access to your microphone</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>to access the user’s photo library. This is called Privacy</string>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>Specifies the reason for your app to get write-only access to the user’s photo library. This is called Privacy</string>
+
+
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
