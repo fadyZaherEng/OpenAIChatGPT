@@ -77,10 +77,10 @@ class _HomeScreenState extends State<HomeScreen> {
       final responseAvailable = jsonDecode(value.body);
 
       if (modeOpenAI == "chat") {
+        print("bbbbbbbbbbbbbbbbbbbbbb${responseAvailable}");
         setState(() {
           answerTextFromOpenAI = utf8.decode(
               responseAvailable["choices"][0]["text"].toString().codeUnits);
-
           print("ChatGPT Chatbot: ");
           print(answerTextFromOpenAI);
         });

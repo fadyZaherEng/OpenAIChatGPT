@@ -12,11 +12,10 @@ class APIService {
 
     final body = mode == "chat"
         ? {
-            "model": "text-davinci-003",
+            "model": "gpt-3.5-turbo-instruct",
             "prompt": userInput,
-            "max_tokens": 2000,
-            "temperature": 0.9,
-            "n": 1,
+            "max_tokens": 7,
+            "temperature": 0,
           }
         : {
             "prompt": userInput,
