@@ -8,6 +8,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:open_ai_gpt/api/api_service.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
+import 'package:text_to_speech/text_to_speech.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -24,6 +25,8 @@ class _HomeScreenState extends State<HomeScreen> {
   String modeOpenAI = "chat";
   String imageUrlFromOpenAI = "";
   String answerTextFromOpenAI = "";
+  bool speakFRIDAY = true;
+  final TextToSpeech textToSpeechInstance = TextToSpeech();
 
   void initializeSpeechToText() async {
     await speechToTextInstance.initialize();
@@ -85,6 +88,9 @@ class _HomeScreenState extends State<HomeScreen> {
           print("ChatGPT Chatbot: ");
           print(answerTextFromOpenAI);
         });
+        if (speakFRIDAY == true) {
+          textToSpeechInstance.speak(answerTextFromOpenAI);
+        }
       } else {
         //image generation
         setState(() {
@@ -302,7 +308,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               ElevatedButton(
                                 onPressed: () async {
                                   String? imageStatus =
-                                      await ImageDownloader.downloadImage(imageUrlFromOpenAI);
+                                      await ImageDownloader.downloadImage(
+                                          imageUrlFromOpenAI);
 
                                   if (imageStatus != null) {
                                     ScaffoldMessenger.of(context).showSnackBar(
@@ -332,14 +339,26 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          backgroundColor: Colors.white,
-          child: Image.asset(
-            "assets/images/sound.png",
-            width: 50,
-            height: 50,
-            // color: Colors.white,
-          )),
+        backgroundColor: Colors.white,
+        onPressed: () {
+          if (!isLoading) {
+            setState(() {
+              speakFRIDAY = !speakFRIDAY;
+            });
+          }
+
+          textToSpeechInstance.stop();
+        },
+        child: speakFRIDAY
+            ? Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Image.asset("images/sound.png"),
+              )
+            : Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Image.asset("images/mute.png"),
+              ),
+      ),
     );
   }
 }
