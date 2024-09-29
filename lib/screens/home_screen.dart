@@ -352,11 +352,11 @@ class _HomeScreenState extends State<HomeScreen> {
         child: speakFRIDAY
             ? Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: Image.asset("images/sound.png"),
+                child: Image.asset("assets/images/sound.png"),
               )
             : Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: Image.asset("images/mute.png"),
+                child: Image.asset("assets/images/mute.png"),
               ),
       ),
     );
