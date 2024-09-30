@@ -99,6 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
         //image generation
         setState(() {
           imageUrlFromOpenAI = responseAvailable["data"][0]["url"];
+          print("bbbbbbbbbbbbbbbbbbbbbb${responseAvailable}");
 
           print("Generated Dale E Image Url: ");
           print(imageUrlFromOpenAI);

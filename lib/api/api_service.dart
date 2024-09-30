@@ -25,7 +25,7 @@ class APIService {
       Uri.parse(url + openAiApiUrl),
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer ${Constants.openAiApiKey}"
+        "Authorization": "Bearer ${ApiKeys.openAiApiKey}"
       },
       body: jsonEncode(body),
     );
